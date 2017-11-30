@@ -12,7 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -296,7 +298,7 @@ String addHttp = "";
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("QR Code Generator");
+        jLabel7.setText("Generated QR Code");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -378,7 +380,13 @@ ByteArrayOutputStream out;
              if(txtInput.getText().length()==0)
          return;
          String t = txtInput.getText();
-    addHttp = "https://www.google.co.th/maps/search/"+t+"/phuket";
+         
+       
+    try {
+        addHttp = "https://www.google.co.th/maps/search/"+URLEncoder.encode(t, "UTF-8")+"phuket";
+    } catch (UnsupportedEncodingException ex) {
+        Logger.getLogger(genQr.class.getName()).log(Level.SEVERE, null, ex);
+    }
  
              
      out = QRCode.from(addHttp).withSize(250, 250).to(ImageType.PNG).stream();
